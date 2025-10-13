@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriConnect Marketplace | Product Catalog</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- 1. Global Styles & Variables (Enhanced) --- */
+        :root {
+            --primary-color: #388E3C; /* Deeper, rich Green */
+            --primary-light: #66BB6A;
+            --secondary-color: #FFA000; /* Amber/Orange for action */
+            --text-color: #212121;
+            --light-text-color: #757575;
+            --background-color: #f4f7f6; /* Off-white/light gray */
+            --card-background: #fff;
+            --border-radius: 12px; /* Slightly larger radius for softer look */
+            --shadow-light: 0 4px 16px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.2s;
+        }
+        
+        a:hover {
+            color: var(--primary-light);
+        }
+
+        /* Utility class for filter active state */
+        .category-list li.active {
+            color: var(--primary-color);
+            font-weight: 700;
+            background-color: #e8f5e9; /* Very light green background */
+            border-radius: 4px;
+            padding-left: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        /* --- 2. Header & Navigation (Refined) --- */
+        .header {
+            background-color: var(--card-background);
+            box-shadow: var(--shadow-light);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: -1px; /* Tighter look */
+        }
+
+        .nav-icons a {
+            font-size: 1.3em; /* Slightly larger icons */
+            margin-left: 25px;
+            color: var(--light-text-color);
+            transition: color 0.2s;
+        }
+
+        .nav-icons a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* --- 3. Search Bar (Refined) --- */
+        .search-container {
+            flex-grow: 1;
+            margin: 0 40px;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 10px 15px 10px 45px; /* Padding for icon */
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            font-size: 1em;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.2);
+        }
+
+        .search-container .fas.fa-search {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--light-text-color);
+            font-size: 0.9em;
+        }
+
+        /* --- 4. Main Layout (Product Catalog) --- */
+        .main-content {
+            display: flex;
+            padding: 40px 30px; /* More vertical padding */
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto; /* Center main content */
+        }
+
+        /* --- 5. Sidebar (Filters) --- */
+        .sidebar {
+            width: 280px; /* Slightly wider sidebar */
+            min-width: 280px;
+            padding: 25px;
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            height: fit-content;
+        }
+
+        .filter-group h3 {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .filter-group h3 .fas {
+            margin-right: 8px;
+            color: var(--secondary-color);
+        }
+
+        .filter-group {
+            margin-bottom: 30px;
+        }
+
+        .category-list {
+            list-style: none;
+        }
+        
+        .category-list li {
+            padding: 8px 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.95em;
+            color: var(--light-text-color);
+        }
+
+        .category-list li:hover {
+            color: var(--primary-light);
+            background-color: #f1f8e9;
+            border-radius: 4px;
+        }
+
+        .filter-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .filter-button:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .filter-button:active {
+            transform: scale(0.99);
+        }
+
+        /* --- 6. Product List and Sorting --- */
+        .product-catalog {
+            flex-grow: 1;
+        }
+
+        .sort-options {
+            display: flex;
+            justify-content: flex-end; /* Align to the right */
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 10px 15px;
+            background-color: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .sort-options label {
+            font-weight: 600;
+            margin-right: 10px;
+        }
+
+        .sort-options select {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 0.95em;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .product-grid {
+            /* Excellent use of CSS Grid for responsiveness */
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* --- 7. Product Card Design (Refined) --- */
+        .product-card {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px); /* Deeper lift on hover */
+            box-shadow: var(--shadow-hover);
+        }
+
+        .product-image-container {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-image-container::after {
+            /* Subtle overlay for image */
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.03);
+            pointer-events: none;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.08); /* Enhanced zoom effect */
+        }
+
+        .product-info {
+            padding: 20px; /* More internal padding */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+        
+        .product-price {
+            font-size: 1.6em; /* Larger price */
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-top: 10px; /* Space above price */
+            margin-bottom: 15px;
+        }
+        
+        .ratings {
+            color: var(--secondary-color);
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px; /* Slightly larger radius for buttons */
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn .fas {
+            margin-right: 5px;
+        }
+
+        .btn-cart {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            flex-grow: 1;
+        }
+        
+        .btn-cart:hover {
+            background-color: #ffb300;
+        }
+
+        .btn-buy {
+            background-color: var(--primary-color);
+            color: white;
+            flex-grow: 1; /* Make both buttons equal size */
+        }
+        
+        .btn-buy:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+
+        /* --- 8. Footer (Refined) --- */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 50px;
+            border-top: 1px solid #ddd;
+            color: var(--light-text-color);
+            font-size: 0.9em;
+        }
+        
+        .footer a {
+            color: var(--light-text-color);
+            margin: 0 5px;
+        }
+        
+        .footer a:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- 9. Responsive Design (Mobile-First Optimization) --- */
+        
+        /* Tablet/Small Desktop adjustments */
+        @media (max-width: 1200px) {
+            .main-content {
+                padding: 30px 20px;
+            }
+            
+            .sidebar {
+                width: 250px;
+                min-width: 250px;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 20px;
+            }
+        }
+        
+        /* Mobile/Tablet (Max-width 992px) - Stacked Layout */
+        @media (max-width: 992px) {
+            .header {
+                flex-wrap: wrap;
+                padding: 15px 20px;
+            }
+            
+            .logo {
+                font-size: 1.6em;
+            }
+
+            .search-container {
+                order: 3; /* Move search below logo/nav on small screens */
+                margin: 15px 0 0 0;
+                width: 100%;
+                max-width: none;
+            }
+
+            .nav-icons {
+                order: 2;
+            }
+            
+            .nav-icons a {
+                margin-left: 15px;
+            }
+
+            .logo {
+                order: 1;
+            }
+
+            .main-content {
+                flex-direction: column; /* Stacks sidebar and product grid */
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-width: auto;
+                /* Optional: Add a simple way to toggle the sidebar on mobile */
+                /* max-height: 400px; overflow-y: auto; */
+            }
+            
+            .sort-options {
+                justify-content: space-between;
+                padding: 10px;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* More items per row on mobile if screen allows */
+                gap: 15px;
+            }
+            
+            .product-image-container {
+                height: 150px;
+            }
+            
+            .product-name {
+                font-size: 1.1em;
+            }
+            
+            .product-price {
+                font-size: 1.4em;
+            }
+            
+            .btn {
+                padding: 8px; /* Smaller button padding */
+                font-size: 0.9em;
+            }
+        }
+        
+        /* Smallest Mobile (Max-width 576px) */
+        @media (max-width: 576px) {
+            .product-grid {
+                grid-template-columns: 1fr; /* Single column layout for very small phones */
+            }
+            
+            .header {
+                padding: 10px 15px;
+            }
+            
+            .nav-icons a {
+                font-size: 1.2em;
+                margin-left: 10px;
+            }
+            
+            .action-buttons {
+                flex-direction: column; /* Stack Add to Cart and Buy Now buttons */
+            }
+            
+            .btn-cart, .btn-buy {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">AgriLink 🌱</div>
+        
+        <div class="search-container">
+            <i class="fas fa-search"></i>
+            <input type="search" class="search-bar" placeholder="Search fresh produce, tools, or location..." aria-label="Search">
+        </div>
+
+        <div class="nav-icons">
+            <a href="#" aria-label="Shopping Cart" title="Cart"><i class="fas fa-shopping-cart"></i></a>
+            <a href="#" aria-label="Wishlist" title="Wishlist"><i class="fas fa-heart"></i></a>
+            <a href="#" aria-label="Account" title="Account"><i class="fas fa-user-circle"></i></a>
+        </div>
+    </header>
+
+    <div class="main-content">
+
+        <aside class="sidebar">
+            <div class="filter-group">
+                <h3><i class="fas fa-tags"></i> Product Categories</h3>
+                <ul class="category-list">
+                    <li data-category="all" class="active">All Products</li>
+                    <li data-category="seeds">Seeds & Seedlings</li>
+                    <li data-category="veggies">Fresh Vegetables</li>
+                    <li data-category="fruits">Orchard Fruits</li>
+                    <li data-category="feed">Livestock Feed</li>
+                    <li data-category="tool">Farm Tools</li>
+                    <li data-category="rice">Grain Crops</li>
+                    <li data-category="meat">Fresh Poultry & Meat</li>
+                    <li data-category="crafts">Agri Crafts & Sundries</li>
+                </ul>
+            </div>
+            
+            <div class="filter-group">
+                <h3><i class="fas fa-dollar-sign"></i> Price Range</h3>
+                <input type="range" min="0" max="5000" value="5000" style="width: 100%; margin: 10px 0;">
+                <p style="font-size: 0.9em; color: var(--light-text-color); text-align: center;">₱0 - ₱5,000</p>
+            </div>
+
+            <button class="filter-button"><i class="fas fa-filter"></i> Apply Filters</button>
+        </aside>
+
+        <section class="product-catalog">
+            
+            <div class="sort-options">
+                <label for="sort-by">Sort By:</label>
+                <select id="sort-by">
+                    <option value="popularity">Popularity</option>
+                    <option value="newest">Newest Arrivals</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                </select>
+            </div>
+
+            <div class="product-grid" id="product-list">
+                
+                <div class="product-card" data-category="seeds">
+                    <div class="product-image-container">
+                        <img src="Heirloom Tomato Seeds.jpg" alt="Heirloom Tomato Seeds" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-name">Heirloom Tomato Seeds</span>
+                        <p class="product-description">Premium quality seeds for growing delicious, non-GMO heirloom tomatoes. High yield and disease resistance.</p>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i> (4.5)
+                        </div>
+                        <p class="product-price">₱149.00</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-cart"><i class="fas fa-cart-plus"></i> Cart</button>
+                            <button class="btn btn-buy">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card" data-category="fruits">
+                    <div class="product-image-container">
+                        <img src="mango.webp" alt="Carabao Mangoes" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-name">Carabao Mangoes (3kg Box)</span>
+                        <p class="product-description">Sweet, fiberless, and export-quality mangoes, hand-picked at peak ripeness from Guimaras groves.</p>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> (5.0)
+                        </div>
+                        <p class="product-price">₱300.00</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-cart"><i class="fas fa-cart-plus"></i> Cart</button>
+                            <button class="btn btn-buy">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="veggies">
+                    <div class="product-image-container">
+                        <img src="eggplant.jpg" alt="Eggplant" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-name">Eggplant (2kg Box)</span>
+                        <p class="product-description">Known as the ultimate meat substitute, eggplant offers a rich, satisfying texture perfect for any meal.</p>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> (5.0)
+                        </div>
+                        <p class="product-price">₱80.00</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-cart"><i class="fas fa-cart-plus"></i> Cart</button>
+                            <button class="btn btn-buy">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="rice">
+                    <div class="product-image-container">
+                        <img src="rice.png" alt="Jasmine Rice" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-name">Jasmine Premium Rice (50 kg)</span>
+                        <p class="product-description">Aromatic, long-grain white rice with a naturally sweet aroma and fluffy texture, harvested from local farms.</p>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> (5.0)
+                        </div>
+                        <p class="product-price">₱1,200.00</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-cart"><i class="fas fa-cart-plus"></i> Cart</button>
+                            <button class="btn btn-buy">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="meat">
+                    <div class="product-image-container">
+                        <img src="meat.jpg" alt="Chiken Breast Fillets" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-name">Chicken Breast Fillets (1 kg)</span>
+                        <p class="product-description">High in Protein, Low in Fat. Quick & Easy Meal Prep. Sustainably Sourced Freshness.</p>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> (5.0)
+                        </div>
+                        <p class="product-price">₱190.00</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-cart"><i class="fas fa-cart-plus"></i> Cart</button>
+                            <button class="btn btn-buy">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="crafts">
+                    <div class="product-image-container">
+                        <img src="basket.jpg" alt="Nipa Crops" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-name">Nipa Palm 'Bayong' Basket</span>
+                        <p class="product-description">Handwoven utility basket crafted by local artisans using sustainable Nipa palm leaves.</p>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> (5.0)
+                        </div>
+                        <p class="product-price">₱100.00</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-cart"><i class="fas fa-cart-plus"></i> Cart</button>
+                            <button class="btn btn-buy">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="crops">
+                    <div class="product-image-container">
+                        <img src="Organic Soil Booster.jpg" alt="Organic Soil Booster" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-name">Organic Soil Booster (1kg)</span>
+                        <p class="product-description">All-natural compost mix to revitalize soil health. Perfect for vegetable gardens and potted plants.</p>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i> (4.0)
+                        </div>
+                        <p class="product-price">₱399.50</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-cart"><i class="fas fa-cart-plus"></i> Cart</button>
+                            <button class="btn btn-buy">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-category="tool">
+                    <div class="product-image-container">
+                        <img src="Ergonomic Hand Trowel.webp" alt="Heavy-Duty Hand Trowel" class="product-image">
+                    </div>
+                    <div class="product-info">
+                        <span class="product-name">Heavy-Duty Hand Trowel</span>
+                        <p class="product-description">Stainless steel, rust-proof trowel with an ergonomic rubber grip for comfortable and long-lasting use.</p>
+                        <div class="ratings">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i> (5.0)
+                        </div>
+                        <p class="product-price">₱250.00</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-cart"><i class="fas fa-cart-plus"></i> Cart</button>
+                            <button class="btn btn-buy">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <p style="grid-column: 1 / -1; text-align: center; margin-top: 30px; color: var(--light-text-color);">End of Featured Products. <a href="#" style="font-weight: 600;">Load More</a></p>
+
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        &copy; 2025 AgriLink Marketplace. All rights reserved. | <a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Help</a>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const categoryList = document.querySelector('.category-list');
+            const productGrid = document.getElementById('product-list');
+            const productCards = document.querySelectorAll('.product-card');
+
+            categoryList.addEventListener('click', (event) => {
+                if (event.target.tagName === 'LI') {
+                    const selectedCategory = event.target.getAttribute('data-category');
+
+                    // 1. Update active category highlight
+                    categoryList.querySelectorAll('li').forEach(li => li.classList.remove('active'));
+                    event.target.classList.add('active');
+
+                    // 2. Filter products
+                    productCards.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+
+                        if (selectedCategory === 'all' || cardCategory === selectedCategory) {
+                            card.style.display = 'flex';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+            });
+
+            // Simple event listener for the action buttons
+            productGrid.addEventListener('click', (event) => {
+                const target = event.target.closest('.btn');
+                
+                if (target) {
+                    if (target.classList.contains('btn-cart')) {
+                        event.stopPropagation(); // Prevent card click event from firing
+                        const productName = target.closest('.product-card').querySelector('.product-name').textContent;
+                        alert(`"${productName}" added to cart!`);
+                    } else if (target.classList.contains('btn-buy')) {
+                        event.stopPropagation(); // Prevent card click event from firing
+                        alert('Proceeding to Checkout...');
+                    }
+                } else if (event.target.closest('.product-card')) {
+                    // Clicking on the card area but not on a button
+                    alert('Opening Product Details Page for this item...');
+                }
+            });
+            
+            // Optional: Implement basic sorting logic (just an example)
+            const sortBySelect = document.getElementById('sort-by');
+            sortBySelect.addEventListener('change', () => {
+                alert(`Sorting by: ${sortBySelect.options[sortBySelect.selectedIndex].text}`);
+                // Actual sorting logic would go here, reordering productCards in the DOM
+            });
+            
+            // Optional: Apply Filters button alert
+            document.querySelector('.filter-button').addEventListener('click', () => {
+                alert('Filters Applied! (You would implement the logic here)');
+            });
+        });
+    </script>
+
+</body>
+</html>
